@@ -227,13 +227,10 @@ export const DefaultLayout = ({
   );
 
   const [metadataInstances, setMetadataInstances] = useState<
-    { id: string; data: any }[]
+    { id: string; data?: any }[]
   >([]);
 
   useEffect(() => {
-    if (!metadata.data) {
-      return;
-    }
     const currentNode = selectedItems[0];
     if (!currentNode) {
       return;
@@ -250,14 +247,11 @@ export const DefaultLayout = ({
           return instance;
         }),
       );
-    }
-    // else update it
-    else {
+    } else {
       setMetadataInstances([
         ...metadataInstances,
         {
           id: currentNode,
-          data: metadata.data,
         },
       ]);
     }
@@ -404,19 +398,25 @@ export const DefaultLayout = ({
                         <div
                           key={instance.id}
                           className={classNames(
-                            "transition-all",
                             instance.id !== selectedItems[0] && "hidden",
                           )}
                         >
-                          <ResourceMetadata
-                            node={instance.data.node}
-                            inbound={instance.data.inbound}
-                            outbound={instance.data.outbound}
-                            onConnectionNodeClick={(path) => {
-                              expand(path);
-                              setSelectedItems([path]);
-                            }}
-                          />
+                          {!instance.data && (
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                              <SpinnerLoader />
+                            </div>
+                          )}
+                          {!instance.data && (
+                            <ResourceMetadata
+                              node={instance.data?.node}
+                              inbound={instance.data?.inbound}
+                              outbound={instance.data?.outbound}
+                              onConnectionNodeClick={(path) => {
+                                expand(path);
+                                setSelectedItems([path]);
+                              }}
+                            />
+                          )}
                         </div>
                       ))}
 
