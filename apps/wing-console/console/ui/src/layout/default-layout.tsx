@@ -241,13 +241,13 @@ export const DefaultLayout = ({
       return;
     }
 
-    const updatedInstances = { ...metadataInstances };
-    updatedInstances[currentNode] = {
-      id: currentNode,
-      data: metadata.data,
-    };
-
-    setMetadataInstances(updatedInstances);
+    setMetadataInstances((instances) => {
+      instances[currentNode] = {
+        id: currentNode,
+        data: metadata.data,
+      };
+      return instances;
+    });
   }, [metadata.data, selectedItems]);
 
   return (
