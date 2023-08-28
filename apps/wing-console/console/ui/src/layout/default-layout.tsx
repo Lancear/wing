@@ -237,13 +237,11 @@ export const DefaultLayout = ({
 
   useEffect(() => {
     const currentNode = selectedItems[0];
-
     if (!currentNode) {
       return;
     }
 
     const updatedInstances = { ...metadataInstances };
-
     updatedInstances[currentNode] = updatedInstances[currentNode]
       ? {
           id: currentNode,
