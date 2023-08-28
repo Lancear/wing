@@ -29,6 +29,11 @@ export interface LayoutProps {
   layoutConfig?: LayoutConfig;
 }
 
+type MetadataInstance = {
+  id: string;
+  data?: any;
+};
+
 const defaultLayoutConfig: LayoutConfig = {
   leftPanel: {
     components: [
@@ -227,34 +232,28 @@ export const DefaultLayout = ({
   );
 
   const [metadataInstances, setMetadataInstances] = useState<
-    { id: string; data?: any }[]
-  >([]);
+    Record<string, MetadataInstance>
+  >({});
 
   useEffect(() => {
     const currentNode = selectedItems[0];
+
     if (!currentNode) {
       return;
     }
-    if (metadataInstances.some((instance) => instance.id === currentNode)) {
-      setMetadataInstances(
-        metadataInstances.map((instance) => {
-          if (instance.id === currentNode) {
-            return {
-              id: currentNode,
-              data: metadata.data,
-            };
-          }
-          return instance;
-        }),
-      );
-    } else {
-      setMetadataInstances([
-        ...metadataInstances,
-        {
+
+    const updatedInstances = { ...metadataInstances };
+
+    updatedInstances[currentNode] = updatedInstances[currentNode]
+      ? {
           id: currentNode,
-        },
-      ]);
-    }
+          data: metadata.data,
+        }
+      : {
+          id: currentNode,
+        };
+
+    setMetadataInstances(updatedInstances);
   }, [metadata.data, selectedItems]);
 
   return (
@@ -394,7 +393,7 @@ export const DefaultLayout = ({
                         layout.panels?.rounded && "rounded-lg overflow-hidden",
                       )}
                     >
-                      {metadataInstances.map((instance) => (
+                      {Object.values(metadataInstances).map((instance) => (
                         <div
                           key={instance.id}
                           className={classNames(
