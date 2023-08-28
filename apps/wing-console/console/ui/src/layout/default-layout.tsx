@@ -242,14 +242,10 @@ export const DefaultLayout = ({
     }
 
     const updatedInstances = { ...metadataInstances };
-    updatedInstances[currentNode] = updatedInstances[currentNode]
-      ? {
-          id: currentNode,
-          data: metadata.data,
-        }
-      : {
-          id: currentNode,
-        };
+    updatedInstances[currentNode] = {
+      id: currentNode,
+      data: metadata.data,
+    };
 
     setMetadataInstances(updatedInstances);
   }, [metadata.data, selectedItems]);

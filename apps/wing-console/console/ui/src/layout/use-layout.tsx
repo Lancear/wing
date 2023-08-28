@@ -105,6 +105,7 @@ export const useLayout = ({
     },
     {
       enabled: selectedItems.length > 0,
+      keepPreviousData: false,
     },
   );
 
