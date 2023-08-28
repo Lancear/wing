@@ -406,7 +406,7 @@ export const DefaultLayout = ({
                               <SpinnerLoader />
                             </div>
                           )}
-                          {!instance.data && (
+                          {instance.data && (
                             <ResourceMetadata
                               node={instance.data?.node}
                               inbound={instance.data?.inbound}
