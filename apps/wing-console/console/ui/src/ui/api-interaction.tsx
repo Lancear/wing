@@ -180,24 +180,15 @@ export const ApiInteraction = ({
       return;
     }
 
-    const newUrl = schemaData.url;
-    const newRoutes = getRoutesFromOpenApi(schemaData.openApiSpec);
+    setUrl(schemaData.url);
+    setRoutes(getRoutesFromOpenApi(schemaData.openApiSpec));
     const methods = routes
       .filter((item) => {
         return item.route === currentRoute;
       })
       .map((route) => route.method);
-
-    setUrl(newUrl);
-    if (
-      JSON.stringify(routes) !== JSON.stringify(newRoutes) ||
-      methods[0] !== currentMethod
-    ) {
-      setRoutes(newRoutes);
-      if (methods.length > 0 && methods[0]) {
-        setCurrentMethod(methods[0]);
-      }
-      resetApiState();
+    if (methods.length > 0 && methods[0]) {
+      setCurrentMethod(methods[0]);
     }
   }, [schemaData]);
 

@@ -25,6 +25,25 @@ const createTreeMenuItemFromExplorerTreeItem = (
   };
 };
 
+const hasChild = (item: TreeMenuItem, targetId?: string): boolean => {
+  if (!targetId) {
+    return false;
+  }
+  if (item.id === targetId) {
+    return true;
+  }
+
+  if (item.children) {
+    for (const child of item.children) {
+      if (hasChild(child, targetId)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
+
 export const useExplorer = () => {
   const {
     items,
@@ -61,9 +80,14 @@ export const useExplorer = () => {
     }
     setItems([createTreeMenuItemFromExplorerTreeItem(tree.data)]);
 
-    setSelectedNode.mutate({
-      resourcePath: "root",
-    });
+    const isPresent = items?.[0]?.children?.some((item) =>
+      hasChild(item, selectedNode.data),
+    );
+    if (!isPresent) {
+      setSelectedNode.mutate({
+        resourcePath: "root",
+      });
+    }
   }, [tree.data, setItems]);
 
   useEffect(() => {
