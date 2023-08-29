@@ -124,7 +124,7 @@ export const useLayout = ({
     duration: 400,
   });
 
-  const itemIds = trpc["app.nodeIds"].useQuery();
+  const nodeIds = trpc["app.nodeIds"].useQuery();
 
   useEffect(() => {
     setLoading(
@@ -144,7 +144,7 @@ export const useLayout = ({
 
   return {
     items,
-    itemIds,
+    nodeIds,
     selectedItems,
     setSelectedItems: onSelectedItemsChange,
     expandedItems,
