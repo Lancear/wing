@@ -271,13 +271,12 @@ export const DefaultLayout = ({
     }
 
     setMetadataInstances((instances) => {
-      const newInstances = { ...instances };
       for (const nodeId of Object.keys(instances)) {
         if (!hasChild(node, nodeId)) {
-          delete newInstances[nodeId];
+          delete instances[nodeId];
         }
       }
-      return newInstances;
+      return instances;
     });
   }, [items]);
 
