@@ -94,7 +94,7 @@ export const ApiInteraction = ({
     if (!url || !currentMethod || !currentRoute) {
       return;
     }
-    await callFetch({
+    callFetch({
       url,
       route: currentRoute,
       variables: pathVariables,
@@ -179,17 +179,25 @@ export const ApiInteraction = ({
     if (!schemaData) {
       return;
     }
-    resetApiState();
-    setUrl(schemaData.url);
-    const routes = getRoutesFromOpenApi(schemaData.openApiSpec);
-    setRoutes(routes);
+
+    const newUrl = schemaData.url;
+    const newRoutes = getRoutesFromOpenApi(schemaData.openApiSpec);
     const methods = routes
       .filter((item) => {
         return item.route === currentRoute;
       })
       .map((route) => route.method);
-    if (methods.length > 0 && methods[0]) {
-      setCurrentMethod(methods[0]);
+
+    setUrl(newUrl);
+    if (
+      JSON.stringify(routes) !== JSON.stringify(newRoutes) ||
+      methods[0] !== currentMethod
+    ) {
+      setRoutes(newRoutes);
+      if (methods.length > 0 && methods[0]) {
+        setCurrentMethod(methods[0]);
+      }
+      resetApiState();
     }
   }, [schemaData]);
 
