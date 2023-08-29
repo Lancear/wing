@@ -60,8 +60,7 @@ export const useExplorer = () => {
     if (!tree.data || !itemIds.data) {
       return;
     }
-    const node = createTreeMenuItemFromExplorerTreeItem(tree.data);
-    setItems([node]);
+    setItems([createTreeMenuItemFromExplorerTreeItem(tree.data)]);
 
     if (!selectedNode.data || !itemIds.data?.includes(selectedNode.data)) {
       setSelectedNode.mutate({
