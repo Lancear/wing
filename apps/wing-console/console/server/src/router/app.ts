@@ -132,13 +132,13 @@ export const createAppRouter = () => {
         );
 
         const list = new Array<string>();
-        const getItemIds = (item: ExplorerItem) => {
+        const getNodeIds = (item: ExplorerItem) => {
           list.push(item.id);
           for (const child of item.childItems ?? []) {
-            getItemIds(child);
+            getNodeIds(child);
           }
         };
-        getItemIds(node);
+        getNodeIds(node);
         return list;
       }),
     "app.selectNode": createProcedure
