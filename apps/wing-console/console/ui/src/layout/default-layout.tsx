@@ -391,12 +391,12 @@ export const DefaultLayout = ({
                     className={classNames(
                       theme.border4,
                       "flex-shrink w-80 min-w-[10rem] z-10",
+                      USE_EXTERNAL_THEME_COLOR,
                     )}
                   >
                     <div
                       className={classNames(
                         "w-full h-full relative",
-                        USE_EXTERNAL_THEME_COLOR,
                         theme.bg3,
                         layout.panels?.rounded && "rounded-lg overflow-hidden",
                       )}
