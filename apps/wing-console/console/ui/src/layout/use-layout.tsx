@@ -13,6 +13,7 @@ import {
 import { trpc } from "../services/trpc.js";
 import { useExplorer } from "../services/use-explorer.js";
 import { TestsContext } from "../tests-context.js";
+import { TreeMenuItem } from "../ui/use-tree-menu-items.js";
 
 export interface UseLayoutProps {
   cloudAppState: State;
@@ -123,6 +124,21 @@ export const useLayout = ({
     duration: 400,
   });
 
+  const [nodeList, setNodeList] = useState<string[]>([]);
+  useEffect(() => {
+    const getChildrenIds = (node: TreeMenuItem): string[] => {
+      if (!node.children) {
+        return [];
+      }
+      return node.children.flatMap((child) => [
+        child.id,
+        ...getChildrenIds(child),
+      ]);
+    };
+    const list = items.flatMap((item) => [item.id, ...getChildrenIds(item)]);
+    setNodeList(list);
+  }, [items]);
+
   useEffect(() => {
     setLoading(
       cloudAppState === "loadingSimulator" ||
@@ -141,6 +157,7 @@ export const useLayout = ({
 
   return {
     items,
+    nodeList,
     selectedItems,
     setSelectedItems: onSelectedItemsChange,
     expandedItems,

@@ -25,7 +25,7 @@ const createTreeMenuItemFromExplorerTreeItem = (
   };
 };
 
-export const hasChild = (item: TreeMenuItem, targetId?: string): boolean => {
+const hasChild = (item: TreeMenuItem, targetId?: string): boolean => {
   if (!targetId) {
     return false;
   }

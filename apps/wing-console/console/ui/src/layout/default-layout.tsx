@@ -15,7 +15,6 @@ import { ConsoleLogsFilters } from "../features/console-logs-filters.js";
 import { ConsoleLogs } from "../features/console-logs.js";
 import { MapView } from "../features/map-view.js";
 import { TestsTreeView } from "../features/tests-tree-view.js";
-import { hasChild } from "../services/use-explorer.js";
 import { BlueScreenOfDeath } from "../ui/blue-screen-of-death.js";
 import { EdgeMetadata } from "../ui/edge-metadata.js";
 import { Explorer } from "../ui/explorer.js";
@@ -75,6 +74,7 @@ export const DefaultLayout = ({
 }: LayoutProps) => {
   const {
     items,
+    nodeList,
     selectedItems,
     setSelectedItems,
     expandedItems,
@@ -265,20 +265,15 @@ export const DefaultLayout = ({
   }, [metadata.data, selectedItems]);
 
   useEffect(() => {
-    const node = items[0];
-    if (!node) {
-      return;
-    }
-
     setMetadataInstances((instances) => {
       for (const nodeId of Object.keys(instances)) {
-        if (!hasChild(node, nodeId)) {
+        if (!nodeList.includes(nodeId)) {
           delete instances[nodeId];
         }
       }
       return instances;
     });
-  }, [items]);
+  }, [nodeList]);
 
   return (
     <>
