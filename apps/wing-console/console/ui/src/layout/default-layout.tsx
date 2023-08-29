@@ -251,7 +251,7 @@ export const DefaultLayout = ({
 
   useEffect(() => {
     const currentNode = selectedItems[0];
-    if (!currentNode || !metadata.data) {
+    if (!currentNode) {
       return;
     }
 
