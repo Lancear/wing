@@ -181,7 +181,8 @@ export const ApiInteraction = ({
     }
 
     setUrl(schemaData.url);
-    setRoutes(getRoutesFromOpenApi(schemaData.openApiSpec));
+    const routes = getRoutesFromOpenApi(schemaData.openApiSpec);
+    setRoutes(routes);
     const methods = routes
       .filter((item) => {
         return item.route === currentRoute;
