@@ -44,7 +44,7 @@ export const useExplorer = () => {
 
   const setSelectedNode = trpc["app.selectNode"].useMutation();
   const selectedNode = trpc["app.selectedNode"].useQuery();
-  const itemIds = trpc["app.itemIds"].useQuery();
+  const itemIds = trpc["app.nodeIds"].useQuery();
 
   const onSelectedItemsChange = useCallback(
     (selectedItems: string[]) => {

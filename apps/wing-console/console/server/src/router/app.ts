@@ -114,7 +114,7 @@ export const createAppRouter = () => {
           input?.showTests,
         );
       }),
-    "app.itemIds": createProcedure
+    "app.nodeIds": createProcedure
       .input(
         z
           .object({
