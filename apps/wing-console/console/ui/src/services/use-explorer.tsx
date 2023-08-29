@@ -25,25 +25,6 @@ const createTreeMenuItemFromExplorerTreeItem = (
   };
 };
 
-const hasChild = (item: TreeMenuItem, targetId?: string): boolean => {
-  if (!targetId) {
-    return false;
-  }
-  if (item.id === targetId) {
-    return true;
-  }
-
-  if (item.children) {
-    for (const child of item.children) {
-      if (hasChild(child, targetId)) {
-        return true;
-      }
-    }
-  }
-
-  return false;
-};
-
 export const useExplorer = () => {
   const {
     items,
