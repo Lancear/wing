@@ -251,7 +251,7 @@ export const DefaultLayout = ({
 
   useEffect(() => {
     const currentNode = selectedItems[0];
-    if (!currentNode) {
+    if (!currentNode || !metadata.data) {
       return;
     }
 
@@ -265,15 +265,18 @@ export const DefaultLayout = ({
   }, [metadata.data, selectedItems]);
 
   useEffect(() => {
+    if (!itemIds.data) {
+      return;
+    }
     setMetadataInstances((instances) => {
       for (const nodeId of Object.keys(instances)) {
-        if (!itemIds.includes(nodeId)) {
+        if (!itemIds.data.includes(nodeId)) {
           delete instances[nodeId];
         }
       }
       return instances;
     });
-  }, [itemIds]);
+  }, [itemIds.data]);
 
   return (
     <>

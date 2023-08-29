@@ -114,6 +114,34 @@ export const createAppRouter = () => {
           input?.showTests,
         );
       }),
+    "app.itemIds": createProcedure
+      .input(
+        z
+          .object({
+            showTests: z.boolean().optional(),
+          })
+          .optional(),
+      )
+      .query(async ({ ctx, input }) => {
+        const simulator = await ctx.simulator();
+        const { tree } = simulator.tree().rawData();
+        const node = createExplorerItemFromConstructTreeNode(
+          shakeTree(tree),
+          simulator,
+          input?.showTests,
+        );
+
+        const getItemIds = (item: ExplorerItem, list: string[] = []) => {
+          list.push(item.id);
+          if (item.childItems) {
+            for (const child of item.childItems) {
+              getItemIds(child, list);
+            }
+          }
+          return list;
+        };
+        return getItemIds(node);
+      }),
     "app.selectNode": createProcedure
       .input(
         z.object({

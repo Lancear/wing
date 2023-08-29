@@ -124,20 +124,7 @@ export const useLayout = ({
     duration: 400,
   });
 
-  const [itemIds, setItemIds] = useState<string[]>([]);
-  useEffect(() => {
-    const getChildrenIds = (node: TreeMenuItem): string[] => {
-      if (!node.children) {
-        return [];
-      }
-      return node.children.flatMap((child) => [
-        child.id,
-        ...getChildrenIds(child),
-      ]);
-    };
-    const list = items.flatMap((item) => [item.id, ...getChildrenIds(item)]);
-    setItemIds(list);
-  }, [items]);
+  const itemIds = trpc["app.itemIds"].useQuery();
 
   useEffect(() => {
     setLoading(
