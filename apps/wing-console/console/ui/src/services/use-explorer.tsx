@@ -25,7 +25,7 @@ const createTreeMenuItemFromExplorerTreeItem = (
   };
 };
 
-const hasChild = (item: TreeMenuItem, targetId?: string): boolean => {
+export const hasChild = (item: TreeMenuItem, targetId?: string): boolean => {
   if (!targetId) {
     return false;
   }
@@ -78,9 +78,10 @@ export const useExplorer = () => {
     if (!tree.data) {
       return;
     }
-    setItems([createTreeMenuItemFromExplorerTreeItem(tree.data)]);
+    const node = createTreeMenuItemFromExplorerTreeItem(tree.data);
+    setItems([node]);
 
-    const isPresent = items?.[0]?.children?.some((item) =>
+    const isPresent = node.children?.some((item) =>
       hasChild(item, selectedNode.data),
     );
     if (!isPresent) {
