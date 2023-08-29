@@ -131,16 +131,15 @@ export const createAppRouter = () => {
           input?.showTests,
         );
 
-        const getItemIds = (item: ExplorerItem, list: string[] = []) => {
+        const list = new Array<string>();
+        const getItemIds = (item: ExplorerItem) => {
           list.push(item.id);
-          if (item.childItems) {
-            for (const child of item.childItems) {
-              getItemIds(child, list);
-            }
+          for (const child of item.childItems ?? []) {
+            getItemIds(child);
           }
-          return list;
         };
-        return getItemIds(node);
+        getItemIds(node);
+        return list;
       }),
     "app.selectNode": createProcedure
       .input(
