@@ -74,7 +74,7 @@ export const DefaultLayout = ({
 }: LayoutProps) => {
   const {
     items,
-    nodeList,
+    itemIds,
     selectedItems,
     setSelectedItems,
     expandedItems,
@@ -267,13 +267,13 @@ export const DefaultLayout = ({
   useEffect(() => {
     setMetadataInstances((instances) => {
       for (const nodeId of Object.keys(instances)) {
-        if (!nodeList.includes(nodeId)) {
+        if (!itemIds.includes(nodeId)) {
           delete instances[nodeId];
         }
       }
       return instances;
     });
-  }, [nodeList]);
+  }, [itemIds]);
 
   return (
     <>

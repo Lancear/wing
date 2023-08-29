@@ -124,7 +124,7 @@ export const useLayout = ({
     duration: 400,
   });
 
-  const [nodeList, setNodeList] = useState<string[]>([]);
+  const [itemIds, setItemIds] = useState<string[]>([]);
   useEffect(() => {
     const getChildrenIds = (node: TreeMenuItem): string[] => {
       if (!node.children) {
@@ -136,7 +136,7 @@ export const useLayout = ({
       ]);
     };
     const list = items.flatMap((item) => [item.id, ...getChildrenIds(item)]);
-    setNodeList(list);
+    setItemIds(list);
   }, [items]);
 
   useEffect(() => {
@@ -157,7 +157,7 @@ export const useLayout = ({
 
   return {
     items,
-    nodeList,
+    itemIds,
     selectedItems,
     setSelectedItems: onSelectedItemsChange,
     expandedItems,
