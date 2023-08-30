@@ -258,6 +258,7 @@ export const DefaultLayout = ({
       return;
     }
 
+    // Store the metadata information in order to preserve the state of the inputs when the user switches between nodes
     setMetadataInstances((instances) => {
       instances[currentNode] = {
         id: currentNode,
@@ -272,6 +273,7 @@ export const DefaultLayout = ({
     if (!nodeIds.data) {
       return;
     }
+    // Remove the metadata information for nodes that are no longer present
     setMetadataInstances((instances) => {
       for (const nodeId of Object.keys(instances)) {
         if (!nodeIds.data.includes(nodeId)) {
