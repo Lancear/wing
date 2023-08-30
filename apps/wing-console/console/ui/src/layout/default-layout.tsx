@@ -245,7 +245,7 @@ export const DefaultLayout = ({
     ],
   );
 
-  const [currentNodeMetadata, setCurrentNodeMetadata] = useState<
+  const [currentMetadataNodeId, setCurrentMetadataNodeId] = useState<
     string | undefined
   >();
   const [metadataInstances, setMetadataInstances] = useState<
@@ -265,7 +265,7 @@ export const DefaultLayout = ({
       };
       return instances;
     });
-    setCurrentNodeMetadata(currentNode);
+    setCurrentMetadataNodeId(currentNode);
   }, [metadata.data, selectedItems]);
 
   useEffect(() => {
@@ -424,7 +424,7 @@ export const DefaultLayout = ({
                         <div
                           key={instance.id}
                           className={classNames(
-                            instance.id !== currentNodeMetadata && "hidden",
+                            instance.id !== currentMetadataNodeId && "hidden",
                           )}
                         >
                           {!instance.data && (
