@@ -5,6 +5,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -96,6 +97,21 @@ export const PrefixStateProvider = ({
   prefix,
   children,
 }: PropsWithChildren<PrefixStateProviderProps>) => {
+  const { state, setState } = useStateContext();
+  if (!state || !setState) {
+    throw new Error("usePersistentState must be used within a StateProvider");
+  }
+
+  const setPrefix = useCallback(
+    (prefix: string) => {
+      setState(new Map(state).set(prefix, []));
+    },
+    [state, setState],
+  );
+  useEffect(() => {
+    setPrefix(prefix);
+  }, [prefix]);
+
   return (
     <PrefixStateContext.Provider value={{ prefix }}>
       {children}
