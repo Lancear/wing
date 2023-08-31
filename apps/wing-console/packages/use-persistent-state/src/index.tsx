@@ -1,18 +1,24 @@
 import {
+  Dispatch,
   PropsWithChildren,
+  SetStateAction,
   createContext,
+  useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
 
 interface StateContextProps {
-  state: Map<string, Array<any>>;
-  setState: (state: Map<string, Array<any>>) => void;
+  storeNewState?: (prefix: string, value: any) => number;
+  getState?: (prefix: string, index?: number) => any;
+  setState?: (prefix: string, index: number, value: any) => void;
 }
 
 const StateContext = createContext<StateContextProps>({
-  state: new Map<string, Array<any>>(),
+  storeNewState: () => 0,
+  getState: () => {},
   setState: () => {},
 });
 
@@ -21,13 +27,50 @@ const useStateContext = () => useContext(StateContext);
 export const StateProvider = ({
   children,
 }: PropsWithChildren<StateContextProps>) => {
-  const [state, setState] = useState<Map<string, Array<any>>>(new Map());
+  const [state, setInternalState] = useState<Map<string, Array<any>>>(
+    new Map(),
+  );
+
+  const setState = useCallback(
+    (prefix: string, index: number, value: any) => {
+      const updatedState = new Map(state);
+      const currentValue = updatedState.get(prefix);
+      if (currentValue) {
+        currentValue[index] = value;
+      } else {
+        updatedState.set(prefix, [value]);
+      }
+      setInternalState(updatedState);
+    },
+    [state],
+  );
+  const getState = useCallback(
+    (prefix: string, index?: number) => {
+      const value = state.get(prefix);
+      if (value) {
+        return index === undefined ? value : value[index];
+      }
+      return;
+    },
+    [state],
+  );
+  const storeNewState = useCallback((prefix: string, value?: string) => {
+    const state = getState(prefix);
+    if (state) {
+      const index = state.length - 1;
+      setState(prefix, index, value);
+      return index;
+    }
+    setState(prefix, 0, value);
+    return 0;
+  }, []);
 
   return (
     <StateContext.Provider
       value={{
-        state,
+        getState,
         setState,
+        storeNewState,
       }}
     >
       {children}
@@ -35,50 +78,31 @@ export const StateProvider = ({
   );
 };
 
-export const usePersistentState = (defaultValue?: any) => {
+export const usePersistentState = function <T>(
+  defaultValue?: T | (() => T),
+): [T, Dispatch<SetStateAction<T>>] {
   const { prefix } = usePrefixStateContext();
 
   if (!prefix) {
     throw new Error("usePersistentState must be used within a StateProvider");
   }
 
-  const { state, setState } = useStateContext();
-  if (!state) {
-    throw new Error("state must be defined");
+  const { getState, setState, storeNewState } = useStateContext();
+  if (!getState || !setState || !storeNewState) {
+    throw new Error("usePersistentState must be used within a StateProvider");
   }
 
-  const index = useMemo(() => {
-    const value = state.get(prefix);
-    if (value) {
-      return value.length - 1;
-    }
-    return 0;
-  }, [prefix, state]);
+  const index = storeNewState(prefix, defaultValue);
 
-  const values = useMemo(() => {
-    const value = state.get(prefix);
-    if (value) {
-      return value;
-    }
-    return [defaultValue];
-  }, [defaultValue, prefix, state]);
-
-  const updatedState = new Map(state);
-  updatedState.set(prefix, values);
-
-  const setValue = (value: any) => {
-    const newValues = [...values];
-    newValues[index] = value;
-
-    const updatedState = new Map(state);
-    updatedState.set(prefix, newValues);
-
-    setState(updatedState);
+  const setValue: Dispatch<SetStateAction<T>> = (value: SetStateAction<T>) => {
+    console.log("usePersistentState.setValue", { prefix, index, value });
+    setState(prefix, index, value);
   };
 
-  const value = useMemo(() => values[index], [index, values]);
-
-  return [value, setValue];
+  const value = useMemo(() => {
+    return getState(prefix, index) ?? defaultValue;
+  }, [index, prefix, getState, defaultValue]);
+  return [value as T, setValue];
 };
 
 interface PrefixStateProviderProps {

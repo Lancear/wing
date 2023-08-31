@@ -9,6 +9,7 @@ import {
   useKeyValueList,
   useTheme,
 } from "@wingconsole/design-system";
+import { usePersistentState } from "@wingconsole/use-persistent-state";
 import classNames from "classnames";
 import { useCallback, useEffect, useId, useState } from "react";
 
@@ -44,12 +45,13 @@ export const ApiInteraction = ({
   const { theme } = useTheme();
   const bodyId = useId();
 
-  const [url, setUrl] = useState<string>("");
+  const [url, setUrl] = useState("");
   const [routes, setRoutes] = useState<ApiRoute[]>([]);
-  const [currentRoute, setCurrentRoute] = useState<string>("");
-  const [currentMethod, setCurrentMethod] = useState<string>("GET");
-  const [body, setBody] = useState<string>("");
-  const [currentHeaderKey, setCurrentHeaderKey] = useState<string>("");
+  const [currentRoute, setCurrentRoute] = usePersistentState("");
+
+  const [currentMethod, setCurrentMethod] = usePersistentState("GET");
+  const [body, setBody] = useState("");
+  const [currentHeaderKey, setCurrentHeaderKey] = useState("");
   const [valuesList, setValuesList] = useState<string[]>([]);
 
   const [currentOptionsTab, setCurrentOptionsTab] = useState("headers");

@@ -8,6 +8,7 @@ import {
 } from "@wingconsole/design-system";
 import type { State, LayoutConfig, LayoutComponent } from "@wingconsole/server";
 import { useLoading } from "@wingconsole/use-loading";
+import { PrefixStateProvider } from "@wingconsole/use-persistent-state";
 import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -245,43 +246,12 @@ export const DefaultLayout = ({
     ],
   );
 
-  const [currentMetadataInstanceId, setCurrentMetadataInstanceId] = useState<
-    string | undefined
-  >();
-  const [metadataInstances, setMetadataInstances] = useState<
-    Record<string, MetadataInstance>
-  >({});
-
-  useEffect(() => {
-    const currentNode = selectedItems[0];
-    if (!currentNode) {
-      return;
-    }
-
-    // Store the metadata information in order to preserve the state of the inputs when the user switches between nodes
-    setMetadataInstances((instances) => {
-      instances[currentNode] = {
-        id: currentNode,
-        data: metadata.data,
-      };
-      return instances;
-    });
-    setCurrentMetadataInstanceId(currentNode);
-  }, [metadata.data, selectedItems]);
-
   useEffect(() => {
     if (!nodeIds.data) {
       return;
     }
     // Remove the metadata information for nodes that are no longer present
-    setMetadataInstances((instances) => {
-      for (const nodeId of Object.keys(instances)) {
-        if (!nodeIds.data.includes(nodeId)) {
-          delete instances[nodeId];
-        }
-      }
-      return instances;
-    });
+    // in UseStateContext
   }, [nodeIds.data]);
 
   return (
@@ -422,32 +392,19 @@ export const DefaultLayout = ({
                         layout.panels?.rounded && "rounded-lg overflow-hidden",
                       )}
                     >
-                      {Object.values(metadataInstances).map((instance) => (
-                        <div
-                          key={instance.id}
-                          className={classNames(
-                            instance.id !== currentMetadataInstanceId &&
-                              "hidden",
-                          )}
-                        >
-                          {!instance.data && (
-                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                              <SpinnerLoader />
-                            </div>
-                          )}
-                          {instance.data && (
-                            <ResourceMetadata
-                              node={instance.data?.node}
-                              inbound={instance.data?.inbound}
-                              outbound={instance.data?.outbound}
-                              onConnectionNodeClick={(path) => {
-                                expand(path);
-                                setSelectedItems([path]);
-                              }}
-                            />
-                          )}
-                        </div>
-                      ))}
+                      <PrefixStateProvider prefix={selectedItems[0] ?? ""}>
+                        {metadata.data && (
+                          <ResourceMetadata
+                            node={metadata.data?.node}
+                            inbound={metadata.data?.inbound}
+                            outbound={metadata.data?.outbound}
+                            onConnectionNodeClick={(path) => {
+                              expand(path);
+                              setSelectedItems([path]);
+                            }}
+                          />
+                        )}
+                      </PrefixStateProvider>
 
                       {selectedEdgeId && edgeMetadata.data && (
                         <EdgeMetadata
