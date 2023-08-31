@@ -47,9 +47,9 @@ export const ApiInteraction = ({
 
   const [url, setUrl] = useState("");
   const [routes, setRoutes] = useState<ApiRoute[]>([]);
-  const [currentRoute, setCurrentRoute] = usePersistentState("");
+  const [currentRoute, setCurrentRoute] = usePersistentState("", 0);
 
-  const [currentMethod, setCurrentMethod] = usePersistentState("GET");
+  const [currentMethod, setCurrentMethod] = usePersistentState("GET", 1);
   const [body, setBody] = useState("");
   const [currentHeaderKey, setCurrentHeaderKey] = useState("");
   const [valuesList, setValuesList] = useState<string[]>([]);
