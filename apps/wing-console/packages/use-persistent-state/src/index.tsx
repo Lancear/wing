@@ -27,43 +27,44 @@ const useStateContext = () => useContext(StateContext);
 export const StateProvider = ({
   children,
 }: PropsWithChildren<StateContextProps>) => {
-  const [state, setInternalState] = useState<Map<string, Array<any>>>(
+  const [internalState, setInternalState] = useState<Map<string, Array<any>>>(
     new Map(),
   );
 
   const setState = useCallback(
     (prefix: string, index: number, value: any) => {
-      const updatedState = new Map(state);
+      const updatedState = new Map(internalState);
       const currentValue = updatedState.get(prefix);
+
       if (currentValue) {
         currentValue[index] = value;
-      } else {
-        updatedState.set(prefix, [value]);
       }
+      updatedState.set(prefix, currentValue || [value]);
       setInternalState(updatedState);
     },
-    [state],
+    [internalState],
   );
+
   const getState = useCallback(
     (prefix: string, index?: number) => {
-      const value = state.get(prefix);
+      const value = internalState.get(prefix);
       if (value) {
         return index === undefined ? value : value[index];
       }
       return;
     },
-    [state],
+    [internalState],
   );
-  const storeNewState = useCallback((prefix: string, value?: string) => {
-    const state = getState(prefix);
-    if (state) {
-      const index = state.length - 1;
+
+  const storeNewState = useCallback(
+    (prefix: string, value?: string) => {
+      const state = getState(prefix);
+      const index = state ? state.length - 1 : 0;
       setState(prefix, index, value);
       return index;
-    }
-    setState(prefix, 0, value);
-    return 0;
-  }, []);
+    },
+    [getState, setState],
+  );
 
   return (
     <StateContext.Provider
@@ -92,10 +93,11 @@ export const usePersistentState = function <T>(
     throw new Error("usePersistentState must be used within a StateProvider");
   }
 
-  const index = storeNewState(prefix, defaultValue);
+  const [index] = useState(() => {
+    return storeNewState(prefix, defaultValue);
+  });
 
   const setValue: Dispatch<SetStateAction<T>> = (value: SetStateAction<T>) => {
-    console.log("usePersistentState.setValue", { prefix, index, value });
     setState(prefix, index, value);
   };
 
