@@ -40,7 +40,6 @@ export const useCreatePersistentState = (prefix: string) => {
         const values = contextState.current.get(prefix) ?? [];
         if (values.length > newIndex) {
           setValue(values[newIndex]);
-          return;
         }
       }, []);
 
