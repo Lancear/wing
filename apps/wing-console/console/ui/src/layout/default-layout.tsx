@@ -394,7 +394,8 @@ export const DefaultLayout = ({
                     >
                       {metadata.data && (
                         <PersistentStateConsumerProvider
-                          prefix={selectedItems[0] ?? ""}
+                          key={metadata.data.node.id}
+                          prefix={metadata.data.node.id}
                         >
                           <ResourceMetadata
                             node={metadata.data?.node}

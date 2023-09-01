@@ -79,9 +79,13 @@ export const usePersistentState = function <T>(
   }, []);
 
   useEffect(() => {
+    if (index === -1) {
+      return;
+    }
     return () => {
       const values = contextState.current.get(prefix) ?? [];
       values[index] = state;
+
       contextState.current.set(prefix, values);
     };
   }, [state, index, contextState, prefix]);
