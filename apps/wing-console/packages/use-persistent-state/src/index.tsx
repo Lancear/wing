@@ -3,118 +3,88 @@ import {
   PropsWithChildren,
   SetStateAction,
   createContext,
-  useCallback,
   useContext,
   useEffect,
-  useMemo,
+  useRef,
+  MutableRefObject,
   useState,
 } from "react";
 
-interface StateContextProps {
-  state?: Map<string, Array<any>>;
-  setState?: (state: Map<string, Array<any>>) => void;
-}
+const PersistentStateContext = createContext<{
+  state: MutableRefObject<Map<string, any[]>>;
+}>(undefined!);
 
-const StateContext = createContext<StateContextProps>({
-  state: new Map<string, Array<any>>(),
-  setState: () => {},
-});
+const usePersistentStateContext = () => useContext(PersistentStateContext);
 
-const useStateContext = () => useContext(StateContext);
-
-export const StateProvider = ({
-  children,
-}: PropsWithChildren<StateContextProps>) => {
-  const [state, setState] = useState<Map<string, Array<any>>>(new Map());
-
-  return (
-    <StateContext.Provider
-      value={{
-        state,
-        setState,
-      }}
-    >
-      {children}
-    </StateContext.Provider>
-  );
-};
-
-export const usePersistentState = function <T>(
-  defaultValue?: T | (() => T),
-  index: number = 0,
-): [T, Dispatch<SetStateAction<T>>] {
-  const { prefix } = usePrefixStateContext();
-
-  if (!prefix) {
-    throw new Error("usePersistentState must be used within a StateProvider");
-  }
-
-  const { state, setState } = useStateContext();
-  if (!state || !setState) {
-    throw new Error("usePersistentState must be used within a StateProvider");
-  }
-
-  const setValue = useCallback(
-    (value: SetStateAction<T>) => {
-      const updatedState = new Map(state);
-      const currentValue = updatedState.get(prefix);
-
-      if (currentValue) {
-        currentValue[index] = value;
-      }
-      updatedState.set(prefix, currentValue || [value]);
-      setState(updatedState);
-    },
-    [prefix, index, state, setState],
-  );
-
-  const value = useMemo(() => {
-    return state.get(prefix)?.[index] || defaultValue;
-  }, [index, prefix, state, defaultValue]);
-
-  return [value as T, setValue];
-};
-
-interface PrefixStateProviderProps {
-  prefix: string;
-}
-
-const PrefixStateContext = createContext<PrefixStateProviderProps | undefined>(
-  undefined,
-);
-
-const usePrefixStateContext = () => {
-  const context = useContext(PrefixStateContext);
+const usePersistentStateConsumerContext = () => {
+  const context = useContext(PersistentStateConsumerContext);
   if (!context) {
     throw new Error(
-      "usePrefixStateContext must be used within a PrefixStateProvider",
+      "usePersistentStateConsumerContext must be used within a PersistentStateConsumerProvider",
     );
   }
   return context;
 };
 
-export const PrefixStateProvider = ({
+export const PersistentStateProvider = (props: PropsWithChildren) => {
+  const state = useRef(new Map<string, any[]>());
+  return (
+    <PersistentStateContext.Provider value={{ state }}>
+      {props.children}
+    </PersistentStateContext.Provider>
+  );
+};
+
+interface PersistentStateConsumerProps {
+  prefix: string;
+  index?: MutableRefObject<number>;
+}
+
+const PersistentStateConsumerContext =
+  createContext<PersistentStateConsumerProps>(undefined!);
+
+export function PersistentStateConsumerProvider({
   prefix,
   children,
-}: PropsWithChildren<PrefixStateProviderProps>) => {
-  const { state, setState } = useStateContext();
-  if (!state || !setState) {
-    throw new Error("usePersistentState must be used within a StateProvider");
-  }
-
-  const setPrefix = useCallback(
-    (prefix: string) => {
-      setState(new Map(state).set(prefix, []));
-    },
-    [state, setState],
-  );
+}: PropsWithChildren<{
+  prefix: string;
+}>) {
+  const index = useRef(0);
   useEffect(() => {
-    setPrefix(prefix);
-  }, [prefix]);
-
+    index.current = 0;
+  }, []);
   return (
-    <PrefixStateContext.Provider value={{ prefix }}>
+    <PersistentStateConsumerContext.Provider value={{ index, prefix: prefix }}>
       {children}
-    </PrefixStateContext.Provider>
+    </PersistentStateConsumerContext.Provider>
   );
+}
+
+export const usePersistentState = function <T>(
+  initialValue: T | (() => T),
+): [T, Dispatch<SetStateAction<T>>] {
+  const { state: contextState } = usePersistentStateContext();
+  const { index: contextIndex, prefix } = usePersistentStateConsumerContext();
+
+  const [index, setIndex] = useState(-1);
+  const [state, setState] = useState(initialValue);
+  useEffect(() => {
+    const newIndex = contextIndex!.current++;
+    setIndex(newIndex);
+
+    const values = contextState.current.get(prefix) ?? [];
+    if (values.length > newIndex) {
+      setState(values[newIndex]);
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      const values = contextState.current.get(prefix) ?? [];
+      values[index] = state;
+      contextState.current.set(prefix, values);
+    };
+  }, [state, index, contextState, prefix]);
+
+  return [state, setState];
 };

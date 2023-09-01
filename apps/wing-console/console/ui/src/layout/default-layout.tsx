@@ -8,7 +8,7 @@ import {
 } from "@wingconsole/design-system";
 import type { State, LayoutConfig, LayoutComponent } from "@wingconsole/server";
 import { useLoading } from "@wingconsole/use-loading";
-import { PrefixStateProvider } from "@wingconsole/use-persistent-state";
+import { PersistentStateConsumerProvider } from "@wingconsole/use-persistent-state";
 import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -392,8 +392,10 @@ export const DefaultLayout = ({
                         layout.panels?.rounded && "rounded-lg overflow-hidden",
                       )}
                     >
-                      <PrefixStateProvider prefix={selectedItems[0] ?? ""}>
-                        {metadata.data && (
+                      {metadata.data && (
+                        <PersistentStateConsumerProvider
+                          prefix={selectedItems[0] ?? ""}
+                        >
                           <ResourceMetadata
                             node={metadata.data?.node}
                             inbound={metadata.data?.inbound}
@@ -403,8 +405,8 @@ export const DefaultLayout = ({
                               setSelectedItems([path]);
                             }}
                           />
-                        )}
-                      </PrefixStateProvider>
+                        </PersistentStateConsumerProvider>
+                      )}
 
                       {selectedEdgeId && edgeMetadata.data && (
                         <EdgeMetadata
