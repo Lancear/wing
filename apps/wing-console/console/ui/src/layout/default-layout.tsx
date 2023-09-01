@@ -393,20 +393,15 @@ export const DefaultLayout = ({
                       )}
                     >
                       {metadata.data && (
-                        <PersistentStateConsumerProvider
-                          key={metadata.data.node.id}
-                          prefix={metadata.data.node.id}
-                        >
-                          <ResourceMetadata
-                            node={metadata.data?.node}
-                            inbound={metadata.data?.inbound}
-                            outbound={metadata.data?.outbound}
-                            onConnectionNodeClick={(path) => {
-                              expand(path);
-                              setSelectedItems([path]);
-                            }}
-                          />
-                        </PersistentStateConsumerProvider>
+                        <ResourceMetadata
+                          node={metadata.data?.node}
+                          inbound={metadata.data?.inbound}
+                          outbound={metadata.data?.outbound}
+                          onConnectionNodeClick={(path) => {
+                            expand(path);
+                            setSelectedItems([path]);
+                          }}
+                        />
                       )}
 
                       {selectedEdgeId && edgeMetadata.data && (

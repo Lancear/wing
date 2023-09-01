@@ -16,16 +16,6 @@ const PersistentStateContext = createContext<{
 
 const usePersistentStateContext = () => useContext(PersistentStateContext);
 
-const usePersistentStateConsumerContext = () => {
-  const context = useContext(PersistentStateConsumerContext);
-  if (!context) {
-    throw new Error(
-      "usePersistentStateConsumerContext must be used within a PersistentStateConsumerProvider",
-    );
-  }
-  return context;
-};
-
 export const PersistentStateProvider = (props: PropsWithChildren) => {
   const state = useRef(new Map<string, any[]>());
   return (
@@ -35,60 +25,40 @@ export const PersistentStateProvider = (props: PropsWithChildren) => {
   );
 };
 
-interface PersistentStateConsumerProps {
-  prefix: string;
-  index?: MutableRefObject<number>;
-}
+export const useCreatePersistentState = (prefix: string) => {
+  let index = 0;
+  return {
+    usePersistentState: function <T>(
+      initialValue: T | (() => T),
+    ): [T, Dispatch<SetStateAction<T>>] {
+      const { state: contextState } = usePersistentStateContext();
+      const [value, setValue] = useState(initialValue);
 
-const PersistentStateConsumerContext =
-  createContext<PersistentStateConsumerProps>(undefined!);
+      const [newIndex] = useState(index++);
 
-export function PersistentStateConsumerProvider({
-  prefix,
-  children,
-}: PropsWithChildren<{
-  prefix: string;
-}>) {
-  const index = useRef(0);
-  useEffect(() => {
-    index.current = 0;
-  }, []);
-  return (
-    <PersistentStateConsumerContext.Provider value={{ index, prefix: prefix }}>
-      {children}
-    </PersistentStateConsumerContext.Provider>
-  );
-}
+      useEffect(() => {
+        const values = contextState.current.get(prefix) ?? [];
+        if (values.length > newIndex) {
+          setValue(values[newIndex]);
+          return;
+        }
+      }, []);
 
-export const usePersistentState = function <T>(
-  initialValue: T | (() => T),
-): [T, Dispatch<SetStateAction<T>>] {
-  const { state: contextState } = usePersistentStateContext();
-  const { index: contextIndex, prefix } = usePersistentStateConsumerContext();
+      useEffect(() => {
+        if (index === -1) {
+          return;
+        }
+        return () => {
+          if (value === initialValue) {
+            return;
+          }
+          const state = contextState.current.get(prefix) ?? [];
+          state[newIndex] = value;
+          contextState.current.set(prefix, state);
+        };
+      }, [contextState, value, newIndex, initialValue]);
 
-  const [index, setIndex] = useState(-1);
-  const [state, setState] = useState(initialValue);
-  useEffect(() => {
-    const newIndex = contextIndex!.current++;
-    setIndex(newIndex);
-
-    const values = contextState.current.get(prefix) ?? [];
-    if (values.length > newIndex) {
-      setState(values[newIndex]);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (index === -1) {
-      return;
-    }
-    return () => {
-      const values = contextState.current.get(prefix) ?? [];
-      values[index] = state;
-
-      contextState.current.set(prefix, values);
-    };
-  }, [state, index, contextState, prefix]);
-
-  return [state, setState];
+      return [value, setValue];
+    },
+  };
 };

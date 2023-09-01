@@ -58,6 +58,7 @@ export interface KeyValueListProps {
   readonly?: boolean;
   className?: string;
   placeholder?: string;
+  initialValue?: KeyValueItem[];
 }
 export const KeyValueList = ({
   items,
@@ -75,10 +76,11 @@ export const KeyValueList = ({
   valueDisabled = false,
   readonly = false,
   placeholder = "No items",
+  initialValue = [],
 }: KeyValueListProps) => {
   const { theme } = useTheme();
 
-  const [editItems, setEditItems] = useState<KeyValueItem[]>([]);
+  const [editItems, setEditItems] = useState<KeyValueItem[]>(initialValue);
 
   useEffect(() => {
     if (readonly || !onAddItem) {

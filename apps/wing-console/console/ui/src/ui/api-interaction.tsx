@@ -9,7 +9,7 @@ import {
   useKeyValueList,
   useTheme,
 } from "@wingconsole/design-system";
-import { usePersistentState } from "@wingconsole/use-persistent-state";
+import { useCreatePersistentState } from "@wingconsole/use-persistent-state";
 import classNames from "classnames";
 import { useCallback, useEffect, useId, useState } from "react";
 
@@ -43,6 +43,7 @@ export const ApiInteraction = ({
   isLoading,
 }: ApiInteractionProps) => {
   const { theme } = useTheme();
+  const { usePersistentState } = useCreatePersistentState("cloud.api");
   const bodyId = useId();
 
   const [url, setUrl] = useState("");
