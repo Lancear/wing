@@ -8,7 +8,6 @@ import {
 } from "@wingconsole/design-system";
 import type { State, LayoutConfig, LayoutComponent } from "@wingconsole/server";
 import { useLoading } from "@wingconsole/use-loading";
-import { PersistentStateConsumerProvider } from "@wingconsole/use-persistent-state";
 import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "react";
 

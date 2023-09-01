@@ -9,7 +9,10 @@ import {
   useKeyValueList,
   useTheme,
 } from "@wingconsole/design-system";
-import { useCreatePersistentState } from "@wingconsole/use-persistent-state";
+import {
+  createPersistentState,
+  PersistentWrapper,
+} from "@wingconsole/use-persistent-state";
 import classNames from "classnames";
 import { useCallback, useEffect, useId, useState } from "react";
 
@@ -43,7 +46,10 @@ export const ApiInteraction = ({
   isLoading,
 }: ApiInteractionProps) => {
   const { theme } = useTheme();
-  const { usePersistentState } = useCreatePersistentState("cloud.api");
+
+  const PERSISTANCE_ID = "cloud.api";
+
+  const { usePersistentState } = createPersistentState(PERSISTANCE_ID);
   const bodyId = useId();
 
   const [url, setUrl] = useState("");
@@ -296,6 +302,11 @@ export const ApiInteraction = ({
                   count: headers.length,
                   panel: (
                     <div className="pt-2">
+                      {/* <PersistentWrapper
+                        usePersistentState={usePersistentState}
+                        value={headers}
+                      >
+                        {(initialValue) => ( */}
                       <KeyValueList
                         items={headers}
                         onAddItem={addHeader}
@@ -306,6 +317,8 @@ export const ApiInteraction = ({
                         valuesList={valuesList}
                         onKeyChange={setCurrentHeaderKey}
                       />
+                      {/* )}
+                      </PersistentWrapper> */}
                     </div>
                   ),
                 },
@@ -321,6 +334,7 @@ export const ApiInteraction = ({
                             Query params
                           </div>
                         )}
+
                         <KeyValueList
                           items={queryParameters}
                           onAddItem={addQueryParameter}
@@ -334,11 +348,13 @@ export const ApiInteraction = ({
                           <div className={classNames("text-sm", theme.text2)}>
                             Path variables
                           </div>
+
                           <KeyValueList
                             items={pathVariables}
                             onEditItem={editPathVariable}
                             disabled={isLoading}
                             keyDisabled={true}
+                            initialValue={initialValue}
                           />
                         </div>
                       )}

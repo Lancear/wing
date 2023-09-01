@@ -14,8 +14,6 @@ const PersistentStateContext = createContext<{
   state: MutableRefObject<Map<string, any[]>>;
 }>(undefined!);
 
-const usePersistentStateContext = () => useContext(PersistentStateContext);
-
 export const PersistentStateProvider = (props: PropsWithChildren) => {
   const state = useRef(new Map<string, any[]>());
   return (
@@ -25,39 +23,64 @@ export const PersistentStateProvider = (props: PropsWithChildren) => {
   );
 };
 
-export const useCreatePersistentState = (prefix: string) => {
+export const createPersistentState = (prefix: string) => {
   let index = 0;
   return {
     usePersistentState: function <T>(
       initialValue: T | (() => T),
     ): [T, Dispatch<SetStateAction<T>>] {
-      const { state: contextState } = usePersistentStateContext();
       const [value, setValue] = useState(initialValue);
+      const currentIndex = useRef(index++);
 
-      const [newIndex] = useState(index++);
+      const { state } = useContext(PersistentStateContext);
+      if (!state) {
+        throw new Error(
+          "usePersistentState must be used within a PersistentStateProvider",
+        );
+      }
 
       useEffect(() => {
-        const values = contextState.current.get(prefix) ?? [];
-        if (values.length > newIndex) {
-          setValue(values[newIndex]);
+        const values = state.current.get(prefix) ?? [];
+        if (values.length > currentIndex.current) {
+          setValue(values[currentIndex.current]);
         }
-      }, []);
+      }, [state, currentIndex, initialValue]);
 
       useEffect(() => {
-        if (index === -1) {
-          return;
-        }
         return () => {
-          if (value === initialValue) {
-            return;
-          }
-          const state = contextState.current.get(prefix) ?? [];
-          state[newIndex] = value;
-          contextState.current.set(prefix, state);
+          // PROBLEM: this useEffect is called more than once
+          console.log("useEffect return", { prefix, currentIndex, value });
+
+          const newState = state.current.get(prefix) ?? [];
+          newState[currentIndex.current] = value;
+          state.current.set(prefix, newState);
         };
-      }, [contextState, value, newIndex, initialValue]);
+      }, [state, currentIndex, value, initialValue]);
 
       return [value, setValue];
     },
   };
+};
+
+export const PersistentWrapper = ({
+  usePersistentState,
+  value,
+  children,
+}: {
+  usePersistentState: (value: any) => [any, Dispatch<SetStateAction<any>>];
+  value: any;
+  children: (value: any) => JSX.Element;
+}) => {
+  const [state, setState] = usePersistentState(value);
+
+  useEffect(() => {
+    if (value === state) {
+      return;
+    }
+    return () => {
+      setState(value);
+    };
+  }, [value, setState, state]);
+
+  return children(state);
 };
