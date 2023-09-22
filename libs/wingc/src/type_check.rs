@@ -545,7 +545,7 @@ impl Subtype for Type {
 			}
 			(Self::Function(l0), Self::Interface(r0)) => {
 				// TODO: Hack to make functions compatible with interfaces
-				// Remove this after https://github.com/winglang/wing/issues/1448
+				// Remove this after https://github.com/winglang/wing/issues/1448 // Closed
 
 				// First check that the function is in the inflight phase
 				if l0.phase != Phase::Inflight {
@@ -568,6 +568,8 @@ impl Subtype for Type {
 				if !l0.phase.is_subtype_of(&r0.phase) {
 					return false;
 				}
+
+				// ^ example phase check
 
 				// If the return types are not subtypes of each other, then this is not a subtype
 				// exception: if function type we are assigning to returns void, then any return type is ok
@@ -2408,14 +2410,14 @@ impl<'a> TypeChecker<'a> {
 	}
 
 	fn type_check_arg_list_against_function_sig(
-		&mut self,
-		arg_list: &ArgList,
-		func_sig: &FunctionSignature,
-		call_span: &impl Spanned,
-		arg_list_types: ArgListTypes,
+		&mut self, // TypeChecker
+		arg_list: &ArgList, // Arg List exprs
+		func_sig: &FunctionSignature, // Function Signature
+		call_span: &impl Spanned, // Function call position
+		arg_list_types: ArgListTypes, // Arg List types belonging to arg list exprs
 	) -> Option<TypeRef> {
 		// Verify arity
-		let pos_args_count = arg_list.pos_args.len();
+		let pos_args_count = arg_list.pos_args.len(); // positioned args
 		let min_args = func_sig.min_parameters();
 		if pos_args_count < min_args {
 			let err_text = format!(
@@ -2433,7 +2435,7 @@ impl<'a> TypeChecker<'a> {
 					self.spanned_error(
 						call_span,
 						format!(
-							"Expected 0 named arguments for func at {}",
+							"Expected 0 named arguments for func at {}", // ain't it 0 args in general?
 							call_span.span().to_string()
 						),
 					);
@@ -2458,24 +2460,29 @@ impl<'a> TypeChecker<'a> {
 			.take_while(|arg| arg.typeref.is_option())
 			.count();
 
+		// ^ in min_parameters we count more optionals, why the difference?
+
 		// Verify arity
+		// ^ 2 header comments with same name in the same function, maybe clarify their difference
 
 		// check if there is a variadic parameter, get its index
 		let variadic_index = func_sig.parameters.iter().position(|o| o.variadic);
 		let (index_last_item, arg_count) = if let Some(variadic_index) = variadic_index {
 			(
 				variadic_index,
-				(variadic_index + 1) + (if arg_list.named_args.is_empty() { 0 } else { 1 }),
+				(variadic_index + 1) + (if arg_list.named_args.is_empty() { 0 } else { 1 }), // can variadic and names args both exist?
 			)
 		} else {
 			(
-				arg_list_types.pos_args.len(),
+				arg_list_types.pos_args.len(), // shouldn't this be - 1 to be an index?
 				(arg_list_types.pos_args.len()) + (if arg_list.named_args.is_empty() { 0 } else { 1 }),
 			)
 		};
-		let min_args = func_sig.parameters.len() - num_optionals;
+		// ^ variadic_index comes from func sig, pos args len from arg list types. This intended?
+
+		let min_args = func_sig.parameters.len() - num_optionals; // why not min_parameters here?
 		let max_args = func_sig.parameters.len();
-		if arg_count < min_args || arg_count > max_args {
+		if arg_count < min_args || arg_count > max_args { // min args not really checked with variadics?
 			let err_text = if min_args == max_args {
 				format!("Expected {} arguments but got {}", min_args, arg_count)
 			} else {
@@ -2488,7 +2495,7 @@ impl<'a> TypeChecker<'a> {
 		}
 		let params = func_sig.parameters.iter();
 
-		if index_last_item == arg_list_types.pos_args.len() {
+		if index_last_item == arg_list_types.pos_args.len() { // no variadic
 			for (arg_expr, arg_type, param) in izip!(arg_list.pos_args.iter(), arg_list_types.pos_args.iter(), params) {
 				self.validate_type(*arg_type, param.typeref, arg_expr);
 			}
@@ -2504,7 +2511,9 @@ impl<'a> TypeChecker<'a> {
 			let variadic_arg_types = *arg_list_types.pos_args.get(index_last_item).unwrap();
 			for i in index_last_item..arg_list.pos_args.len() {
 				let variadic_arg = arg_list.pos_args.get(i).unwrap();
-				if !variadic_arg_types.is_same_type_as(arg_list_types.pos_args.get(i).unwrap()) {
+				if !variadic_arg_types.is_same_type_as(arg_list_types.pos_args.get(i).unwrap()) { // why same and not subtype here?
+					// check function phase for better error message
+					
 					let error = format!(
 						"Expected type to be {}, but got {} instead.",
 						variadic_arg_types,
@@ -2522,6 +2531,8 @@ impl<'a> TypeChecker<'a> {
 			for arg_expr in variadic_arg_list.iter() {
 				self.validate_type(variadic_array_inner_type, variadic_array_inner_type, *arg_expr);
 			}
+
+			// ^ what does this do when actual type and expected type are always the same variadic array inner type?
 		};
 		None
 	}
@@ -2685,6 +2696,10 @@ impl<'a> TypeChecker<'a> {
 			}
 		}
 
+		// ^ Why check inference before error / anything / any of the expected types?
+		//   Isn't this check slower than the other checks? (thinking this due to the visitor, not sure tho)
+		//   Would have expected unresolved check to be the first.
+
 		// If the actual type is anything or any of the expected types then we're good
 		if return_type.is_anything() || expected_types.iter().any(|t| return_type.is_subtype_of(t)) {
 			return return_type;
@@ -2789,6 +2804,8 @@ impl<'a> TypeChecker<'a> {
 		} else {
 			format!("\"{}\"", first_expected_type)
 		};
+
+		// check phase
 
 		let mut message = format!("Expected type to be {expected_type_str}, but got \"{return_type}\" instead");
 		if return_type.is_nil() && expected_types.len() == 1 {
