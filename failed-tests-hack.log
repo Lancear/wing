@@ -1,0 +1,415 @@
+hangar:test: ⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+hangar:test:
+hangar:test:  FAIL  src/test_corpus/valid/capture_reassigable_class_field.main.w.test.ts > wing compile -t tf-aws
+hangar:test: AssertionError:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/valid/capture_reassigable_class_field.main.w:42:25
+hangar:test:    |
+hangar:test: 42 |     assert(util.waitUntil((): bool => {
+hangar:test:    | /-------------------------^
+hangar:test: 43 | |     return counter.peek("k") == 2;
+hangar:test: 44 | |   }));
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/valid/capture_reassigable_class_field.main.w:46:25
+hangar:test:    |
+hangar:test: 46 |     assert(util.waitUntil((): bool => {
+hangar:test:    | /-------------------------^
+hangar:test: 47 | |     return counter.peek("k2") == 1;
+hangar:test: 48 | |   }));
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test:  ❯ ../../examples/tests/valid/capture_reassigable_class_field.main.w:42:25
+hangar:test:  ❯ ../../examples/tests/valid/capture_reassigable_class_field.main.w:46:25
+hangar:test:  ❯ Module.runWingCommand src/utils.ts:37:14
+hangar:test:      35|   } else {
+hangar:test:      36|     if (out.exitCode != 0) {
+hangar:test:      37|       expect.fail(output);
+hangar:test:        |              ^
+hangar:test:      38|     }
+hangar:test:      39|   }
+hangar:test:  ❯ Module.compileTest src/generated_test_targets.ts:27:3
+hangar:test:  ❯ src/test_corpus/valid/capture_reassigable_class_field.main.w.test.ts:7:5
+hangar:test:
+hangar:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+hangar:test:
+hangar:test:  FAIL  src/test_corpus/valid/capture_reassigable_class_field.main.w.test.ts > wing test -t sim
+hangar:test: AssertionError: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/valid/capture_reassigable_class_field.main.w:42:25
+hangar:test:    |
+hangar:test: 42 |     assert(util.waitUntil((): bool => {
+hangar:test:    | /-------------------------^
+hangar:test: 43 | |     return counter.peek("k") == 2;
+hangar:test: 44 | |   }));
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/valid/capture_reassigable_class_field.main.w:46:25
+hangar:test:    |
+hangar:test: 46 |     assert(util.waitUntil((): bool => {
+hangar:test:    | /-------------------------^
+hangar:test: 47 | |     return counter.peek("k2") == 1;
+hangar:test: 48 | |   }));
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test:
+hangar:test:
+hangar:test: Tests 1 failed (1)
+hangar:test: Test Files 1 failed (1)
+hangar:test: Duration 0m0.30s
+hangar:test:
+hangar:test:  ❯ ../../../../examples/tests/valid/capture_reassigable_class_field.main.w:42:25
+hangar:test:  ❯ ../../../../examples/tests/valid/capture_reassigable_class_field.main.w:46:25
+hangar:test:  ❯ Module.runWingCommand src/utils.ts:37:14
+hangar:test:      35|   } else {
+hangar:test:      36|     if (out.exitCode != 0) {
+hangar:test:      37|       expect.fail(output);
+hangar:test:        |              ^
+hangar:test:      38|     }
+hangar:test:      39|   }
+hangar:test:  ❯ Module.testTest src/generated_test_targets.ts:75:15
+hangar:test:  ❯ src/test_corpus/valid/capture_reassigable_class_field.main.w.test.ts:11:5
+hangar:test:
+hangar:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+hangar:test:
+hangar:test:  FAIL  src/test_corpus/valid/redis.main.w.test.ts > wing compile -t tf-aws
+hangar:test: AssertionError:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/valid/redis.main.w:35:18
+hangar:test:    |
+hangar:test: 35 |     util.waitUntil((): bool => {
+hangar:test:    | /------------------^
+hangar:test: 36 | |     return r.get("hello") != nil;
+hangar:test: 37 | |   });
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test:  ❯ ../../examples/tests/valid/redis.main.w:35:18
+hangar:test:  ❯ Module.runWingCommand src/utils.ts:37:14
+hangar:test:      35|   } else {
+hangar:test:      36|     if (out.exitCode != 0) {
+hangar:test:      37|       expect.fail(output);
+hangar:test:        |              ^
+hangar:test:      38|     }
+hangar:test:      39|   }
+hangar:test:  ❯ Module.compileTest src/generated_test_targets.ts:27:3
+hangar:test:  ❯ src/test_corpus/valid/redis.main.w.test.ts:7:5
+hangar:test:
+hangar:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+hangar:test:
+hangar:test:  FAIL  src/test_corpus/valid/redis.main.w.test.ts > wing test -t sim
+hangar:test: AssertionError: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/valid/redis.main.w:35:18
+hangar:test:    |
+hangar:test: 35 |     util.waitUntil((): bool => {
+hangar:test:    | /------------------^
+hangar:test: 36 | |     return r.get("hello") != nil;
+hangar:test: 37 | |   });
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test:
+hangar:test:
+hangar:test: Tests 1 failed (1)
+hangar:test: Test Files 1 failed (1)
+hangar:test: Duration 0m0.43s
+hangar:test:
+hangar:test:  ❯ ../../../../examples/tests/valid/redis.main.w:35:18
+hangar:test:  ❯ Module.runWingCommand src/utils.ts:37:14
+hangar:test:      35|   } else {
+hangar:test:      36|     if (out.exitCode != 0) {
+hangar:test:      37|       expect.fail(output);
+hangar:test:        |              ^
+hangar:test:      38|     }
+hangar:test:      39|   }
+hangar:test:  ❯ Module.testTest src/generated_test_targets.ts:75:15
+hangar:test:  ❯ src/test_corpus/valid/redis.main.w.test.ts:11:5
+hangar:test:
+hangar:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+hangar:test:
+hangar:test:  FAIL  src/test_corpus/sdk_tests/dynamodb-table/query.main.w.test.ts > wing test -t sim
+hangar:test: AssertionError: Error setting up Dynamodb resource simulation (Error: Command failed: docker pull amazon/dynamodb-local:2.0.0
+hangar:test: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+hangar:test: )
+hangar:test:       - Make sure you have docker installed and running
+hangar:test:
+hangar:test:
+hangar:test: Tests 1 failed (1)
+hangar:test: Test Files 1 failed (1)
+hangar:test: Duration 0m0.78s
+hangar:test: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+hangar:test:
+hangar:test:  ❯ Module.runWingCommand src/utils.ts:37:14
+hangar:test:      35|   } else {
+hangar:test:      36|     if (out.exitCode != 0) {
+hangar:test:      37|       expect.fail(output);
+hangar:test:        |              ^
+hangar:test:      38|     }
+hangar:test:      39|   }
+hangar:test:  ❯ Module.testTest src/generated_test_targets.ts:75:15
+hangar:test:  ❯ src/test_corpus/sdk_tests/dynamodb-table/query.main.w.test.ts:11:5
+hangar:test:
+hangar:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+hangar:test:
+hangar:test:  FAIL  src/test_corpus/sdk_tests/dynamodb-table/transaction.main.w.test.ts > wing test -t sim
+hangar:test: AssertionError: Error setting up Dynamodb resource simulation (Error: Command failed: docker pull amazon/dynamodb-local:2.0.0
+hangar:test: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+hangar:test: )
+hangar:test:       - Make sure you have docker installed and running
+hangar:test:
+hangar:test:
+hangar:test: Tests 1 failed (1)
+hangar:test: Test Files 1 failed (1)
+hangar:test: Duration 0m1.27s
+hangar:test: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+hangar:test:
+hangar:test:  ❯ Module.runWingCommand src/utils.ts:37:14
+hangar:test:      35|   } else {
+hangar:test:      36|     if (out.exitCode != 0) {
+hangar:test:      37|       expect.fail(output);
+hangar:test:        |              ^
+hangar:test:      38|     }
+hangar:test:      39|   }
+hangar:test:  ❯ Module.testTest src/generated_test_targets.ts:75:15
+hangar:test:  ❯ src/test_corpus/sdk_tests/dynamodb-table/transaction.main.w.test.ts:11:5
+hangar:test:
+hangar:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+hangar:test:
+hangar:test:  FAIL  src/test_corpus/sdk_tests/queue/push.main.w.test.ts > wing compile -t tf-aws
+hangar:test: AssertionError:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/sdk_tests/queue/push.main.w:18:25
+hangar:test:    |
+hangar:test: 18 |     assert(util.waitUntil((): bool => {
+hangar:test:    | /-------------------------^
+hangar:test: 19 | |     return q.approxSize() == 1;
+hangar:test: 20 | |   }));
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/sdk_tests/queue/push.main.w:25:25
+hangar:test:    |
+hangar:test: 25 |     assert(util.waitUntil((): bool => {
+hangar:test:    | /-------------------------^
+hangar:test: 26 | |     return q.approxSize() == 2;
+hangar:test: 27 | |   }));
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/sdk_tests/queue/push.main.w:33:25
+hangar:test:    |
+hangar:test: 33 |     assert(util.waitUntil((): bool => {
+hangar:test:    | /-------------------------^
+hangar:test: 34 | |     return q.approxSize() == 3;
+hangar:test: 35 | |   }));
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test:  ❯ ../../examples/tests/sdk_tests/queue/push.main.w:18:25
+hangar:test:  ❯ ../../examples/tests/sdk_tests/queue/push.main.w:25:25
+hangar:test:  ❯ ../../examples/tests/sdk_tests/queue/push.main.w:33:25
+hangar:test:  ❯ Module.runWingCommand src/utils.ts:37:14
+hangar:test:      35|   } else {
+hangar:test:      36|     if (out.exitCode != 0) {
+hangar:test:      37|       expect.fail(output);
+hangar:test:        |              ^
+hangar:test:      38|     }
+hangar:test:      39|   }
+hangar:test:  ❯ Module.compileTest src/generated_test_targets.ts:27:3
+hangar:test:  ❯ src/test_corpus/sdk_tests/queue/push.main.w.test.ts:7:5
+hangar:test:
+hangar:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+hangar:test:
+hangar:test:  FAIL  src/test_corpus/sdk_tests/queue/push.main.w.test.ts > wing test -t sim
+hangar:test: AssertionError: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/sdk_tests/queue/push.main.w:18:25
+hangar:test:    |
+hangar:test: 18 |     assert(util.waitUntil((): bool => {
+hangar:test:    | /-------------------------^
+hangar:test: 19 | |     return q.approxSize() == 1;
+hangar:test: 20 | |   }));
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/sdk_tests/queue/push.main.w:25:25
+hangar:test:    |
+hangar:test: 25 |     assert(util.waitUntil((): bool => {
+hangar:test:    | /-------------------------^
+hangar:test: 26 | |     return q.approxSize() == 2;
+hangar:test: 27 | |   }));
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/sdk_tests/queue/push.main.w:33:25
+hangar:test:    |
+hangar:test: 33 |     assert(util.waitUntil((): bool => {
+hangar:test:    | /-------------------------^
+hangar:test: 34 | |     return q.approxSize() == 3;
+hangar:test: 35 | |   }));
+hangar:test:    | \---^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test:
+hangar:test:
+hangar:test: Tests 1 failed (1)
+hangar:test: Test Files 1 failed (1)
+hangar:test: Duration 0m0.66s
+hangar:test:
+hangar:test:  ❯ ../../../../examples/tests/sdk_tests/queue/push.main.w:18:25
+hangar:test:  ❯ ../../../../examples/tests/sdk_tests/queue/push.main.w:25:25
+hangar:test:  ❯ ../../../../examples/tests/sdk_tests/queue/push.main.w:33:25
+hangar:test:  ❯ Module.runWingCommand src/utils.ts:37:14
+hangar:test:      35|   } else {
+hangar:test:      36|     if (out.exitCode != 0) {
+hangar:test:      37|       expect.fail(output);
+hangar:test:        |              ^
+hangar:test:      38|     }
+hangar:test:      39|   }
+hangar:test:  ❯ Module.testTest src/generated_test_targets.ts:75:15
+hangar:test:  ❯ src/test_corpus/sdk_tests/queue/push.main.w.test.ts:11:5
+hangar:test:
+hangar:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+hangar:test:
+hangar:test:  FAIL  src/test_corpus/sdk_tests/util/wait-until.main.w.test.ts > wing compile -t tf-aws
+hangar:test: AssertionError:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/sdk_tests/util/wait-until.main.w:64:20
+hangar:test:    |
+hangar:test: 64 |       util.waitUntil((): bool => {
+hangar:test:    | /--------------------^
+hangar:test: 65 | |       invokeCounter.inc();
+hangar:test: 66 | |       throw "ERROR";
+hangar:test: 67 | |     });
+hangar:test:    | \-----^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/sdk_tests/util/wait-until.main.w:52:21
+hangar:test:    |
+hangar:test: 52 |   if util.waitUntil(returnFalse, interval: oneSecond, timeout: fiveSeconds) {
+hangar:test:    |                     ^^^^^^^^^^^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/sdk_tests/util/wait-until.main.w:37:21
+hangar:test:    |
+hangar:test: 37 |   if util.waitUntil(returnTrueAfter3Seconds, interval: oneSecond) {
+hangar:test:    |                     ^^^^^^^^^^^^^^^^^^^^^^^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/sdk_tests/util/wait-until.main.w:24:21
+hangar:test:    |
+hangar:test: 24 |   if util.waitUntil(inflight (): bool => { return false; }, timeout: oneSecond) {
+hangar:test:    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> /mnt/c/Users/Lance/Documents/projects/wing/examples/tests/sdk_tests/util/wait-until.main.w:15:21
+hangar:test:    |
+hangar:test: 15 |   if util.waitUntil((): bool => { return true; }) {
+hangar:test:    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test:  ❯ ../../examples/tests/sdk_tests/util/wait-until.main.w:64:20
+hangar:test:  ❯ ../../examples/tests/sdk_tests/util/wait-until.main.w:52:21
+hangar:test:  ❯ ../../examples/tests/sdk_tests/util/wait-until.main.w:37:21
+hangar:test:  ❯ ../../examples/tests/sdk_tests/util/wait-until.main.w:24:21
+hangar:test:  Test Files  6 failed | 202 passed (208)
+hangar:test:       Tests  10 failed | 486 passed (496)
+hangar:test:    Start at  22:10:30
+hangar:test:    Duration  571.23s (transform 7.81s, setup 11ms, collect 20.22s, tests 5982.70s, environment 18ms, prepare 9.44s)
+hangar:test:
+hangar:test:  ❯ ../../examples/tests/sdk_tests/util/wait-until.main.w:15:21
+hangar:test:  ❯ Module.runWingCommand src/utils.ts:37:14
+hangar:test:      35|   } else {
+hangar:test:      36|     if (out.exitCode != 0) {
+hangar:test:      37|       expect.fail(output);
+hangar:test:        |              ^
+hangar:test:      38|     }
+hangar:test:      39|   }
+hangar:test:  ❯ Module.compileTest src/generated_test_targets.ts:27:3
+hangar:test:  ❯ src/test_corpus/sdk_tests/util/wait-until.main.w.test.ts:7:5
+hangar:test:
+hangar:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+hangar:test:
+hangar:test:  FAIL  src/test_corpus/sdk_tests/util/wait-until.main.w.test.ts > wing test -t sim
+hangar:test: AssertionError: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/sdk_tests/util/wait-until.main.w:64:20
+hangar:test:    |
+hangar:test: 64 |       util.waitUntil((): bool => {
+hangar:test:    | /--------------------^
+hangar:test: 65 | |       invokeCounter.inc();
+hangar:test: 66 | |       throw "ERROR";
+hangar:test: 67 | |     });
+hangar:test:    | \-----^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/sdk_tests/util/wait-until.main.w:52:21
+hangar:test:    |
+hangar:test: 52 |   if util.waitUntil(returnFalse, interval: oneSecond, timeout: fiveSeconds) {
+hangar:test:    |                     ^^^^^^^^^^^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/sdk_tests/util/wait-until.main.w:37:21
+hangar:test:    |
+hangar:test: 37 |   if util.waitUntil(returnTrueAfter3Seconds, interval: oneSecond) {
+hangar:test:    |                     ^^^^^^^^^^^^^^^^^^^^^^^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/sdk_tests/util/wait-until.main.w:24:21
+hangar:test:    |
+hangar:test: 24 |   if util.waitUntil(inflight (): bool => { return false; }, timeout: oneSecond) {
+hangar:test:    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test: error: Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:    --> ../../../../examples/tests/sdk_tests/util/wait-until.main.w:15:21
+hangar:test:    |
+hangar:test: 15 |   if util.waitUntil((): bool => { return true; }) {
+hangar:test:    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Expected type to be "inflight (): bool", but got "inflight (): bool" instead
+hangar:test:
+hangar:test:
+hangar:test:
+hangar:test:
+hangar:test: Tests 1 failed (1)
+hangar:test: Test Files 1 failed (1)
+hangar:test: Duration 0m0.74s
+hangar:test:
+hangar:test:  ❯ ../../../../examples/tests/sdk_tests/util/wait-until.main.w:64:20
+hangar:test:  ❯ ../../../../examples/tests/sdk_tests/util/wait-until.main.w:52:21
+hangar:test:  ❯ ../../../../examples/tests/sdk_tests/util/wait-until.main.w:37:21
+hangar:test:  ❯ ../../../../examples/tests/sdk_tests/util/wait-until.main.w:24:21
+hangar:test:  ❯ ../../../../examples/tests/sdk_tests/util/wait-until.main.w:15:21
+hangar:test:  ❯ Module.runWingCommand src/utils.ts:37:14
+hangar:test:      35|   } else {
+hangar:test:      36|     if (out.exitCode != 0) {
+hangar:test:      37|       expect.fail(output);
+hangar:test:        |              ^
+hangar:test:      38|     }
+hangar:test:      39|   }
+hangar:test:  ❯ Module.testTest src/generated_test_targets.ts:75:15
+hangar:test:  ❯ src/test_corpus/sdk_tests/util/wait-until.main.w.test.ts:11:5
+hangar:test:
+hangar:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+hangar:test:
+hangar:test:  ELIFECYCLE  Test failed. See above for more details.
+hangar:test: ERROR: command finished with error: command (/mnt/c/Users/Lance/Documents/projects/wing/tools/hangar) pnpm run test exited (1)
+hangar#test: command (/mnt/c/Users/Lance/Documents/projects/wing/tools/hangar) pnpm run test exited (1)
+
+ Tasks:    23 successful, 24 total
+Cached:    9 cached, 24 total
+  Time:    15m54.901s
+Failed:    hangar#test

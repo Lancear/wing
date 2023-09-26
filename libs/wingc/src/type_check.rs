@@ -543,27 +543,6 @@ impl Subtype for Type {
 					true
 				}
 			}
-			(Self::Function(l0), Self::Interface(r0)) => {
-				// TODO: Hack to make functions compatible with interfaces
-				// Remove this after https://github.com/winglang/wing/issues/1448 // Closed
-
-				// First check that the function is in the inflight phase
-				if l0.phase != Phase::Inflight {
-					return false;
-				}
-
-				// Next, compare the function to a method on the interface named "handle" if it exists
-				if let Some((method, _)) = r0.get_env().lookup_ext(&CLOSURE_CLASS_HANDLE_METHOD.into(), None).ok() {
-					let method = method.as_variable().unwrap();
-					if method.phase != Phase::Inflight {
-						return false;
-					}
-
-					return self.is_subtype_of(&*method.type_);
-				}
-
-				false
-			}
 			(Self::Function(l0), Self::Function(r0)) => {
 				if !l0.phase.is_subtype_of(&r0.phase) {
 					return false;
@@ -2410,10 +2389,10 @@ impl<'a> TypeChecker<'a> {
 	}
 
 	fn type_check_arg_list_against_function_sig(
-		&mut self, // TypeChecker
-		arg_list: &ArgList, // Arg List exprs
+		&mut self,                    // TypeChecker
+		arg_list: &ArgList,           // Arg List exprs
 		func_sig: &FunctionSignature, // Function Signature
-		call_span: &impl Spanned, // Function call position
+		call_span: &impl Spanned,     // Function call position
 		arg_list_types: ArgListTypes, // Arg List types belonging to arg list exprs
 	) -> Option<TypeRef> {
 		// Verify arity
@@ -2482,7 +2461,8 @@ impl<'a> TypeChecker<'a> {
 
 		let min_args = func_sig.parameters.len() - num_optionals; // why not min_parameters here?
 		let max_args = func_sig.parameters.len();
-		if arg_count < min_args || arg_count > max_args { // min args not really checked with variadics?
+		if arg_count < min_args || arg_count > max_args {
+			// min args not really checked with variadics?
 			let err_text = if min_args == max_args {
 				format!("Expected {} arguments but got {}", min_args, arg_count)
 			} else {
@@ -2495,7 +2475,8 @@ impl<'a> TypeChecker<'a> {
 		}
 		let params = func_sig.parameters.iter();
 
-		if index_last_item == arg_list_types.pos_args.len() { // no variadic
+		if index_last_item == arg_list_types.pos_args.len() {
+			// no variadic
 			for (arg_expr, arg_type, param) in izip!(arg_list.pos_args.iter(), arg_list_types.pos_args.iter(), params) {
 				self.validate_type(*arg_type, param.typeref, arg_expr);
 			}
@@ -2511,9 +2492,10 @@ impl<'a> TypeChecker<'a> {
 			let variadic_arg_types = *arg_list_types.pos_args.get(index_last_item).unwrap();
 			for i in index_last_item..arg_list.pos_args.len() {
 				let variadic_arg = arg_list.pos_args.get(i).unwrap();
-				if !variadic_arg_types.is_same_type_as(arg_list_types.pos_args.get(i).unwrap()) { // why same and not subtype here?
+				if !variadic_arg_types.is_same_type_as(arg_list_types.pos_args.get(i).unwrap()) {
+					// why same and not subtype here?
 					// check function phase for better error message
-					
+
 					let error = format!(
 						"Expected type to be {}, but got {} instead.",
 						variadic_arg_types,
