@@ -136,7 +136,7 @@ impl WingSpan {
 		let other_end = position.end;
 
 		if start.line == end.line && other_start.line == other_end.line {
-			other_start.col >= start.col && other_end.col <= end.col
+			start.line == other_start.line && other_start.col >= start.col && other_end.col <= end.col
 		} else if start.line == end.line {
 			other_start.col >= start.col
 				&& other_start.line == start.line
