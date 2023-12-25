@@ -94,6 +94,8 @@ export async function lsp() {
         hoverProvider: true,
         documentSymbolProvider: true,
         definitionProvider: true,
+        renameProvider: true,
+        referencesProvider: true,
       },
     };
     return result;
@@ -209,6 +211,12 @@ export async function lsp() {
   });
   connection.onCodeAction(async (params) => {
     return callWing("wingc_on_code_action", params);
+  });
+  connection.onRenameRequest(async (params) => {
+    return callWing("wingc_on_rename_request", params);
+  });
+  connection.onReferences(async (params) => {
+    return callWing("wingc_on_references", params);
   });
 
   connection.listen();

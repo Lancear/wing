@@ -15,7 +15,9 @@ export type WingCompilerFunction =
   | "wingc_on_document_symbol"
   | "wingc_on_semantic_tokens"
   | "wingc_on_hover"
-  | "wingc_on_code_action";
+  | "wingc_on_code_action"
+  | "wingc_on_rename_request"
+  | "wingc_on_references";
 
 export interface WingCompilerLoadOptions {
   /**
